@@ -1,4 +1,4 @@
-# DevOps-Project-1: Automated EC2 Instance Provisioning with Terraform, Ansible, and Jenkins
+# DevOps-Project-1: Automated EC2 Instance Provisioning with Terraform, Ansible, and Jenkins 🚀
 
 ## Overview
 This project automates the provisioning of AWS EC2 instances using Terraform, configures them with Ansible, and orchestrates the workflow using Jenkins. It provides a fully automated CI/CD pipeline for deploying infrastructure and configuring servers efficiently.
