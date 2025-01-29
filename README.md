@@ -60,30 +60,27 @@ Before setting up Jenkins, first create an EC2 instance with the following speci
 5. Access Jenkins at `http://your-ec2-instance-ip:8080` and complete the setup wizard.
 
 ### 2. Assigning IAM Role to Jenkins EC2 Instance
-For Jenkins to interact with AWS resources, ensure the Jenkins EC2 instance has an IAM role attached with the necessary permissions. The role should allow Jenkins to create EC2 instances and manage other AWS resources like S3.
+For Jenkins to interact with AWS resources, ensure the Jenkins EC2 instance has an IAM role attached with the necessary permissions. The role should allow Jenkins to create EC2 instances and manage other AWS resources like S3. 
 
 #### Steps:
-1. Attach the IAM Role to the Jenkins EC2 instance.
-2. This step ensures that Jenkins has the permissions to interact with AWS services.
+1. Create the IAM Role with the necessary permissions. See [Guide](https://plugins.jenkins.io/ec2/#plugin-content-iam-setup)
+2. Attach the IAM Role to the Jenkins EC2 instance. 
+3. This step ensures that Jenkins has the permissions to interact with AWS services.
 
 ### 3. Setting Up S3 Bucket for Terraform State
-Terraform uses S3 for state file storage. Follow these steps to set it up:
-1. **Create an S3 Bucket**: This bucket will store the Terraform state files.
-2. **Configure Terraform Backend**: Update your Terraform configuration to use this S3 bucket for state storage. This ensures that Terraform state is preserved and accessible.
-
+Terraform uses S3 for state file storage. **Create an S3 Bucket** Using the bucket name you set in [backend.tf](DevOps_Project_1/Terraform/backend.tf). This bucket will store the Terraform state file. (Note❗: Make sure you set a unique bucket name as per s3 requirements. Reusing the current name will not work) 
+   
 ### 4. Creating and configuring a New Jenkins Item
 To configure the pipeline in Jenkins, follow these steps:
 1. Navigate to **Jenkins Dashboard** and click **New Item**.
 2. Enter a name for the job (e.g., `Terraform_Ansible_Deployment`).
 3. Select **Freestyle Project** and click **OK**.
-4. Set the **Source Code** to this Git Repo and change branch specifier to '*/main'. (Note: you might see an error saying 'failed to connect to git report...'. That is because git hasn't been setup in the jenkins ec2 instance)
+4. Set the **Source Code** to your cloned copy of this Git Repo and change branch specifier to '*/main'. (Note❗: you might see an error saying 'failed to connect to git report...'. That is because git hasn't been setup in the jenkins ec2 instance)
 5. In the **Build** section, set **Build Step** to **Execute Shell** and paste build command from [Jenkinsfile](DevOps_Project_1/Jenkinsfile).
 6. To make the pipeline flexible, you'll need to define parameters in Jenkins:
    - **Choice Parameter for Terraform Actions**: Define whether the pipeline will run `apply` (to provision resources) or `destroy` (to tear down resources).
    - **String Parameter for Server Name**: Allow for the specification of the server name (e.g., Apache).
 7. Click **Save**.
-
-
 
 ### 5. Configure the build parameters in Jenkins:
 Go to **Manage Jenkins > Configure System** and create two parameters:
